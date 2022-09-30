@@ -1,5 +1,6 @@
 package io.javaoperatorsdk.operator.junit;
 
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -19,8 +20,6 @@ import org.slf4j.LoggerFactory;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientBuilder;
-import io.javaoperatorsdk.operator.api.config.ConfigurationService;
 
 public class ClusterDeployedOperatorExtension extends AbstractOperatorExtension {
 
@@ -31,7 +30,6 @@ public class ClusterDeployedOperatorExtension extends AbstractOperatorExtension 
   private final Duration operatorDeploymentTimeout;
 
   private ClusterDeployedOperatorExtension(
-      ConfigurationService configurationService,
       List<HasMetadata> operatorDeployment,
       Duration operatorDeploymentTimeout,
       List<HasMetadata> infrastructure,
@@ -40,7 +38,7 @@ public class ClusterDeployedOperatorExtension extends AbstractOperatorExtension 
       boolean waitForNamespaceDeletion,
       boolean oneNamespacePerClass,
       KubernetesClient kubernetesClient) {
-    super(configurationService, infrastructure, infrastructureTimeout, oneNamespacePerClass,
+    super(infrastructure, infrastructureTimeout, oneNamespacePerClass,
         preserveNamespaceOnError,
         waitForNamespaceDeletion,
         kubernetesClient);
@@ -147,7 +145,6 @@ public class ClusterDeployedOperatorExtension extends AbstractOperatorExtension 
 
     public ClusterDeployedOperatorExtension build() {
       return new ClusterDeployedOperatorExtension(
-          configurationService,
           operatorDeployment,
           deploymentTimeout,
           infrastructure,
